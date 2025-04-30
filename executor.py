@@ -22,7 +22,7 @@ def add_element_to_tree(tree, target, parent_path, node_type="toggle", default_s
     :param node_type: toggle, slider, button, etc.
     :param default_state: used for toggles/sliders
     """
-    node = tree
+    node = tree["Desktop"]
     for key in parent_path:
         if key not in node:
             node[key] = {"type": "section", "children": {}}
@@ -77,7 +77,7 @@ def execute_intents(tree, intents, log_fn):
             # Fallback location: Settings > Misc
             parent_path = ["Settings", "Misc"]
             default = desired_state or str(value or "off")
-            add_element_to_tree(tree["Desktop"], target, parent_path, node_type=action, default_state=default)
+            add_element_to_tree(tree, target, parent_path, node_type=action, default_state=default)
             node = find_element(tree, target)
             if node:
                 log_fn(f"> Fallback: added {target} to tree under {' > '.join(parent_path)}")

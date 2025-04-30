@@ -12,11 +12,7 @@ class JoyBotApp:
         root.geometry("700x500")
         root.resizable(False, False)
 
-        LEFT_WIDTH = 300  # Fixed width for left elements (input, button, dialogue)
-
-        # Title aligned to left (on the same row as close/minimize/maximize)
-        self.title_label = tk.Label(root, text="JoyBot AI", font=("Arial", 16, "bold"))
-        self.title_label.place(x=20, y=10)
+        LEFT_WIDTH = 350  # Fixed width for left elements (input, button, dialogue)
 
         # Dialogue window (left half)
         self.dialogue = scrolledtext.ScrolledText(
@@ -24,7 +20,7 @@ class JoyBotApp:
         )
         self.dialogue.insert(tk.END, "JoyBot: Hi! How can I help you today?\n")
         self.dialogue.config(state='disabled')
-        self.dialogue.place(x=20, y=40)
+        self.dialogue.place(x=20, y=10, width=LEFT_WIDTH)
 
         # Input field (matching width with dialogue and button)
         self.entry_var = tk.StringVar()
@@ -32,13 +28,13 @@ class JoyBotApp:
             root, textvariable=self.entry_var, width=43, font=("Arial", 12), fg="grey"
         )
         self.entry.insert(0, "Type your command here...")
-        self.entry.place(x=20, y=370)
+        self.entry.place(x=20, y=370, width=LEFT_WIDTH)
 
         # Send button underneath input field (same width as input box)
         self.send_button = tk.Button(
             root, text="Send", width=43, font=("Arial", 10), command=self.handle_input
         )
-        self.send_button.place(x=20, y=405)
+        self.send_button.place(x=20, y=405, width=LEFT_WIDTH)
 
         # Action label (right top corner)
         self.action_label = tk.Label(root, text="Action Window", font=("Arial", 12, "bold"))

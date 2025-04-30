@@ -1,0 +1,34 @@
+{
+  "Desktop": {
+    "Settings": {
+      "type": "app",
+      "children": {
+        "Network": {
+          "type": "section",
+          "children": {
+            "Wi-Fi": {
+              "type": "toggle",
+              "state": "off",
+              "actions": ["toggle"]
+            },
+            "Bluetooth": {
+              "type": "toggle",
+              "state": "off",
+              "actions": ["toggle"]
+            }
+          }
+        },
+        "Display": {
+          "type": "section",
+          "children": {
+            "Brightness": {
+              "type": "slider",
+              "value": 50,
+              "actions": ["set_value"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

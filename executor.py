@@ -1,5 +1,19 @@
-from data.accessibility_tree import accessibility_tree
 import time
+import json
+import os
+
+TREE_PATH = os.path.join("data", "accessibility_tree.json")
+
+def load_tree():
+    with open(TREE_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def save_tree(tree):
+    with open(TREE_PATH, "w", encoding="utf-8") as f:
+        json.dump(tree, f, indent=2)
+
+# Initialize the tree globally
+accessibility_tree = load_tree()
 
 def find_element(tree, target):
     for name, node in tree.items():
@@ -78,6 +92,8 @@ def execute_intents(tree, intents, log_fn):
             parent_path = ["Settings", "Misc"]
             default = desired_state or str(value or "off")
             add_element_to_tree(tree, target, parent_path, node_type=action, default_state=default)
+            save_tree(tree)  # make changes persistent
+
             node = find_element(tree, target)
             if node:
                 log_fn(f"> Fallback: added {target} to tree under {' > '.join(parent_path)}")

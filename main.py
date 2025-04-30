@@ -6,7 +6,7 @@ from data.accessibility_tree import accessibility_tree
 
 class JoyBotApp:
     def __init__(self, root):
-        self.tree = accessibility_tree 
+        self.tree = accessibility_tree
 
         root.title("JoyBot AI")
         root.geometry("700x500")
@@ -50,6 +50,11 @@ class JoyBotApp:
         self.action_box.config(state='disabled')
         self.action_box.place(x=400, y=40)
 
+        # Action summary window (upper part of right section)
+        self.action_summary = scrolledtext.ScrolledText(root, wrap=tk.WORD, height=15, width=32, font=("Arial", 9))
+        self.action_summary.config(state='disabled')
+        self.action_summary.place(x=400, y=170)
+
     def clear_placeholder(self, event):
         if self.entry_var.get() == "Type your command here...":
             self.entry_var.set("")
@@ -66,10 +71,12 @@ class JoyBotApp:
         self.dialogue.config(state='disabled')
 
     def log_action(self, text):
-        self.action_log.config(state='normal')
-        self.action_log.insert(tk.END, f"{text}\n")
-        self.action_log.config(state='disabled')
+        # Update the action history window
+        self.action_box.config(state='normal')
+        self.action_box.insert(tk.END, f"{text}\n")
+        self.action_box.config(state='disabled')
 
+        # Update the action summary window
         self.action_summary.config(state='normal')
         self.action_summary.insert(tk.END, f"{text}\n")
         self.action_summary.config(state='disabled')

@@ -44,16 +44,21 @@ class JoyBotApp:
         self.action_label = tk.Label(root, text="Action Window", font=("Arial", 12, "bold"))
         self.action_label.place(x=420, y=10)
 
-        # Action history window (right side)
-        self.action_box = scrolledtext.ScrolledText(root, wrap=tk.WORD, height=27, width=32, font=("Arial", 9))
+        # Action history window (right side, taking up 2/3 of right half)
+        self.action_box = scrolledtext.ScrolledText(
+            root, wrap=tk.WORD, height=18, width=32, font=("Arial", 9)
+        )
         self.action_box.insert(tk.END, "🔍 Action History:\nActions performed will appear here...\n")
         self.action_box.config(state='disabled')
         self.action_box.place(x=400, y=40)
 
-        # Action summary window (upper part of right section)
-        self.action_summary = scrolledtext.ScrolledText(root, wrap=tk.WORD, height=15, width=32, font=("Arial", 9))
-        self.action_summary.config(state='disabled')
-        self.action_summary.place(x=400, y=170)
+        # Search-related keywords window (remaining 1/3 height of the right side)
+        self.search_box = scrolledtext.ScrolledText(
+            root, wrap=tk.WORD, height=9, width=32, font=("Arial", 9)
+        )
+        self.search_box.insert(tk.END, "🔍 Search Keywords:\nEnter keywords to search...\n")
+        self.search_box.config(state='disabled')
+        self.search_box.place(x=400, y=290)  # Place it below the action box, taking the remaining space
 
     def clear_placeholder(self, event):
         if self.entry_var.get() == "Type your command here...":
@@ -76,10 +81,10 @@ class JoyBotApp:
         self.action_box.insert(tk.END, f"{text}\n")
         self.action_box.config(state='disabled')
 
-        # Update the action summary window
-        self.action_summary.config(state='normal')
-        self.action_summary.insert(tk.END, f"{text}\n")
-        self.action_summary.config(state='disabled')
+        # Update the search-related window (can be modified for keywords if necessary)
+        self.search_box.config(state='normal')
+        self.search_box.insert(tk.END, f"{text}\n")
+        self.search_box.config(state='disabled')
 
     def handle_input(self, event=None):
         user_input = self.entry.get().strip()

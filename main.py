@@ -60,15 +60,19 @@ class JoyBotApp:
         self.search_box.config(state='disabled')
         self.search_box.place(x=400, y=290)  # Place it below the action box, taking the remaining space
 
+        # Placeholder behavior
+        self.entry.bind("<FocusIn>", self.clear_placeholder)
+        self.entry.bind("<FocusOut>", self.restore_placeholder)
+
     def clear_placeholder(self, event):
         if self.entry_var.get() == "Type your command here...":
-            self.entry_var.set("")
-            self.entry.config(fg="black")
+            self.entry_var.set("")  # Clear the placeholder when the input field is focused
+            self.entry.config(fg="black")  # Change text color to black when typing
 
     def restore_placeholder(self, event):
         if self.entry_var.get().strip() == "":
-            self.entry_var.set("Type your command here...")
-            self.entry.config(fg="grey")
+            self.entry_var.set("Type your command here...")  # Restore placeholder if input is empty
+            self.entry.config(fg="grey")  # Change text color back to grey for the placeholder
 
     def log_dialogue(self, text):
         self.dialogue.config(state='normal')

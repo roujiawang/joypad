@@ -2,9 +2,12 @@ import tkinter as tk
 from tkinter import scrolledtext
 from parser import parse_intent
 from executor import execute_intents
+from data.accessibility_tree import accessibility_tree
 
 class JoyBotApp:
     def __init__(self, root):
+        self.tree = accessibility_tree 
+
         root.title("JoyBot AI")
         root.geometry("700x500")
         root.resizable(False, False)
@@ -48,7 +51,7 @@ class JoyBotApp:
             self.log_dialogue("JoyBot: Sorry, I couldn't parse that.")
         else:
             self.log_dialogue("JoyBot: Let me take care of that...")
-            execute_intents(intents, self.log_action)
+            execute_intents(self.tree, intents, self.log_action)
 
 if __name__ == "__main__":
     root = tk.Tk()

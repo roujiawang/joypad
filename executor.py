@@ -51,8 +51,7 @@ def add_element_to_tree(tree, target, parent_path, node_type="toggle", default_s
         }
 
 
-def execute_intents(intents, log_fn):
-    tree = accessibility_tree
+def execute_intents(tree, intents, log_fn):
     for intent in intents:
         action = intent["type"]
         target = intent.get("target")

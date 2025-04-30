@@ -6,53 +6,49 @@ from data.accessibility_tree import accessibility_tree
 
 class JoyBotApp:
     def __init__(self, root):
-        self.tree = accessibility_tree
+        self.tree = accessibility_tree 
 
-        # Window setup
         root.title("JoyBot AI")
         root.geometry("700x500")
         root.resizable(False, False)
 
-        # === LEFT SIDE (50% width of window, ~350px) ===
+        LEFT_WIDTH = 300  # Fixed width for left elements (input, button, dialogue)
 
-        # Dialogue box
-        self.dialogue = scrolledtext.ScrolledText(root, wrap=tk.WORD, height=20, width=48, font=("Arial", 10))
+        # Title aligned to left (on the same row as close/minimize/maximize)
+        self.title_label = tk.Label(root, text="JoyBot AI", font=("Arial", 16, "bold"))
+        self.title_label.place(x=20, y=10)
+
+        # Dialogue window (left half)
+        self.dialogue = scrolledtext.ScrolledText(
+            root, wrap=tk.WORD, height=18, width=43, font=("Arial", 10)
+        )
         self.dialogue.insert(tk.END, "JoyBot: Hi! How can I help you today?\n")
         self.dialogue.config(state='disabled')
-        self.dialogue.place(x=20, y=20)
+        self.dialogue.place(x=20, y=40)
 
-        # Input field with placeholder
+        # Input field (matching width with dialogue and button)
         self.entry_var = tk.StringVar()
-        self.entry = tk.Entry(root, textvariable=self.entry_var, width=48, font=("Arial", 12), fg="grey")
+        self.entry = tk.Entry(
+            root, textvariable=self.entry_var, width=43, font=("Arial", 12), fg="grey"
+        )
         self.entry.insert(0, "Type your command here...")
-        self.entry.place(x=20, y=400)
+        self.entry.place(x=20, y=370)
 
-        # Placeholder behavior
-        self.entry.bind("<FocusIn>", self.clear_placeholder)
-        self.entry.bind("<FocusOut>", self.restore_placeholder)
-        self.entry.bind("<Return>", self.handle_input)
+        # Send button underneath input field (same width as input box)
+        self.send_button = tk.Button(
+            root, text="Send", width=43, font=("Arial", 10), command=self.handle_input
+        )
+        self.send_button.place(x=20, y=405)
 
-        # Send button (below input)
-        self.send_button = tk.Button(root, text="Send", width=46, font=("Arial", 10), command=self.handle_input)
-        self.send_button.place(x=20, y=430)
-
-        # === RIGHT SIDE ===
-
-        # Action label (top-left of right half)
+        # Action label (right top corner)
         self.action_label = tk.Label(root, text="Action Window", font=("Arial", 12, "bold"))
-        self.action_label.place(x=390, y=10)
+        self.action_label.place(x=420, y=10)
 
-        # Top: Action log window (timestamped messages)
-        self.action_log = scrolledtext.ScrolledText(root, wrap=tk.WORD, height=15, width=35, font=("Arial", 9))
-        self.action_log.insert(tk.END, "")
-        self.action_log.config(state='disabled')
-        self.action_log.place(x=390, y=40)
-
-        # Bottom: Action summary/search window
-        self.action_summary = scrolledtext.ScrolledText(root, wrap=tk.WORD, height=8, width=35, font=("Arial", 9))
-        self.action_summary.insert(tk.END, "🔍 Action History:\nActions performed will appear here...\n")
-        self.action_summary.config(state='disabled')
-        self.action_summary.place(x=390, y=310)
+        # Action history window (right side)
+        self.action_box = scrolledtext.ScrolledText(root, wrap=tk.WORD, height=27, width=32, font=("Arial", 9))
+        self.action_box.insert(tk.END, "🔍 Action History:\nActions performed will appear here...\n")
+        self.action_box.config(state='disabled')
+        self.action_box.place(x=400, y=40)
 
     def clear_placeholder(self, event):
         if self.entry_var.get() == "Type your command here...":

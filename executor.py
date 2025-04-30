@@ -2,6 +2,7 @@ import time
 import json
 import os
 
+# Path to the JSON tree file
 TREE_PATH = os.path.join("data", "accessibility_tree.json")
 
 def load_tree():
@@ -12,7 +13,7 @@ def save_tree(tree):
     with open(TREE_PATH, "w", encoding="utf-8") as f:
         json.dump(tree, f, indent=2)
 
-# Initialize the tree globally
+# Load the accessibility tree globally once
 accessibility_tree = load_tree()
 
 def find_element(tree, target):
@@ -24,7 +25,6 @@ def find_element(tree, target):
             if result:
                 return result
     return None
-
 
 def add_element_to_tree(tree, target, parent_path, node_type="toggle", default_state="off"):
     """
@@ -64,8 +64,9 @@ def add_element_to_tree(tree, target, parent_path, node_type="toggle", default_s
             "actions": ["click"]
         }
 
+def execute_intents(intents, log_fn):
+    global accessibility_tree
 
-def execute_intents(tree, intents, log_fn):
     for intent in intents:
         action = intent["type"]
         target = intent.get("target")
@@ -77,7 +78,7 @@ def execute_intents(tree, intents, log_fn):
         node = None
 
         while retries >= 0 and not found:
-            node = find_element(tree, target)
+            node = find_element(accessibility_tree, target)
             if node:
                 found = True
                 break
@@ -88,13 +89,11 @@ def execute_intents(tree, intents, log_fn):
 
         if not found:
             log_fn(f"> {target} not found after retries. Creating fallback...")
-            # Fallback location: Settings > Misc
             parent_path = ["Settings", "Misc"]
             default = desired_state or str(value or "off")
-            add_element_to_tree(tree, target, parent_path, node_type=action, default_state=default)
-            save_tree(tree)  # make changes persistent
-
-            node = find_element(tree, target)
+            add_element_to_tree(accessibility_tree, target, parent_path, node_type=action, default_state=default)
+            save_tree(accessibility_tree)  # Save changes after fallback insertion
+            node = find_element(accessibility_tree, target)
             if node:
                 log_fn(f"> Fallback: added {target} to tree under {' > '.join(parent_path)}")
 
@@ -112,5 +111,6 @@ def execute_intents(tree, intents, log_fn):
                 log_fn(f"> Set {target} to {value} (was {old_val})")
             elif action == "click":
                 log_fn(f"> Clicked {target}")
+            save_tree(accessibility_tree)
         else:
             log_fn(f"> Action failed for {target}. Element could not be resolved.")

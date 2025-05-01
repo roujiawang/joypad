@@ -10,7 +10,7 @@
             "children": {
               "Wi-Fi": {
                 "type": "toggle",
-                "state": "on",
+                "state": "off",
                 "actions": [
                   "toggle"
                 ]

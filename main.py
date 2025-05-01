@@ -3,6 +3,9 @@ from tkinter import scrolledtext
 from parser import parse_intent
 from executor import execute_intents
 
+import tkinter as tk
+from tkinter import scrolledtext
+
 class JoyBotApp:
     def __init__(self, root):
         root.title("JoyBot AI")
@@ -29,7 +32,8 @@ class JoyBotApp:
 
         # Send button underneath input field (same width as input box)
         self.send_button = tk.Button(
-            root, text="Send", width=43, font=("Arial", 10), command=self.handle_input
+            root, text="Send", width=43, font=("Arial", 10), command=self.handle_input,
+            bg="#007BFF", fg="white", activebackground="#0056b3", activeforeground="white"
         )
         self.send_button.place(x=20, y=405, width=LEFT_WIDTH)
 

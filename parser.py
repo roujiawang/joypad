@@ -1,7 +1,31 @@
+import logging
 import json
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+
+# Set up logging to both console and file
+log_filename = "joypad.log"  # Log file name
+
+# Create logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)  # Set log level to DEBUG (can be adjusted)
+
+# Console handler for printing logs to the console
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)  # Set console log level
+console_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+console_handler.setFormatter(console_formatter)
+
+# File handler to save logs to a file
+file_handler = logging.FileHandler(log_filename)
+file_handler.setLevel(logging.DEBUG)  # Set file log level
+file_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+file_handler.setFormatter(file_formatter)
+
+# Add handlers to the logger
+logger.addHandler(console_handler)
+logger.addHandler(file_handler)
 
 # Load environment variables and OpenAI client
 load_dotenv()
@@ -69,23 +93,23 @@ def parse_intent(command):
     try:
         accessibility_tree = load_tree()
         system_prompt = build_system_prompt(accessibility_tree)
-        print("[LLM System Prompt]", system_prompt)  # DEBUG OUTPUT
+        logger.debug("[LLM System Prompt] %s", system_prompt)  # DEBUG OUTPUT
 
         response = client.beta.chat.completions.parse(
             model="gpt-4o",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": command}
-            ],
+            messages=[{
+                "role": "system", "content": system_prompt
+            }, {
+                "role": "user", "content": command
+            }],
             temperature=0.2,
             response_format={"type": "json_object"}
         )
 
         content = response.choices[0].message.content
-
-        print("[LLM Raw Output]", content)  # DEBUG OUTPUT
+        logger.debug("[LLM Raw Output] %s", content)  # DEBUG OUTPUT
         data = json.loads(content)
         return data.get("actions", [])
     except Exception as e:
-        print("[LLM Parse Error]", e)
+        logger.error("[LLM Parse Error] %s", e)
         return []

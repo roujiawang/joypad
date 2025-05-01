@@ -67,7 +67,8 @@
               }
             }
           }
-        }
+        },
+        "state": "open"
       },
       "Apps": {
         "type": "section",

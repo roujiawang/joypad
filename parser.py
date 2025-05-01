@@ -51,13 +51,14 @@ def parse_intent(command):
         system_prompt = build_system_prompt(accessibility_tree)
         print("[LLM System Prompt]", system_prompt)  # DEBUG OUTPUT
 
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+        response = client.beta.chat.completions.parse(
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": command}
             ],
-            temperature=0.2
+            temperature=0.2,
+            response_format={"type": "json_object"}
         )
 
         content = response.choices[0].message.content

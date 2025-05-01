@@ -75,7 +75,7 @@
           "Microsoft Edge": {
             "type": "app",
             "path": "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe",
-            "state": "open",
+            "state": "closed",
             "actions": [
               "open_app"
             ]

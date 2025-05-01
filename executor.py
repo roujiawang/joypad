@@ -117,10 +117,49 @@ def execute_intents(intents, log_fn):
 
         # Perform the action
         if node:
-            if action == "open" or action == "open_app":
-                old = node.get("state", "closed")
-                node["state"] = "open"
-                log_fn(f"> Opened {target} (was {old})")
+            current_state = node.get("state", "closed")
+
+            if action == "open":
+                if current_state == "open":
+                    log_fn(f"> {target} is already open.")
+                else:
+                    node["state"] = "open"
+                    log_fn(f"> Opened {target} (was {current_state})")
+
+            elif action == "minimize":
+                if current_state == "minimized":
+                    log_fn(f"> {target} is already minimized.")
+                else:
+                    node["state"] = "minimized"
+                    log_fn(f"> Minimized {target} (was {current_state})")
+
+            elif action == "focus":
+                if current_state == "foreground":
+                    log_fn(f"> {target} is already in the foreground.")
+                else:
+                    node["state"] = "foreground"
+                    log_fn(f"> Brought {target} to foreground (was {current_state})")
+
+            elif action == "close":
+                if current_state == "closed":
+                    log_fn(f"> {target} is already closed.")
+                else:
+                    node["state"] = "closed"
+                    log_fn(f"> Closed {target} (was {current_state})")
+
+            elif action == "crash":
+                if current_state == "crashed":
+                    log_fn(f"> {target} is already in a crashed state.")
+                else:
+                    node["state"] = "crashed"
+                    log_fn(f"> {target} has crashed (was {current_state})")
+
+            elif action == "launching":
+                if current_state == "opening":
+                    log_fn(f"> {target} is already launching.")
+                else:
+                    node["state"] = "opening"
+                    log_fn(f"> Launching {target}... (was {current_state})")
 
             elif action == "toggle":
                 old = node.get("state", "off")
@@ -136,7 +175,7 @@ def execute_intents(intents, log_fn):
                 log_fn(f"> Clicked {target}")
 
             else:
-                log_fn(f"> {action} not recognized for {target}")
+                log_fn(f"> Action '{action}' not recognized for {target}")
 
             save_tree(accessibility_tree)
         else:

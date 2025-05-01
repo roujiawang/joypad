@@ -75,6 +75,7 @@
           "Microsoft Edge": {
             "type": "app",
             "path": "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe",
+            "state": "open",
             "actions": [
               "open_app"
             ]
@@ -82,6 +83,7 @@
           "Notepad": {
             "type": "app",
             "path": "C:\\Windows\\System32\\notepad.exe",
+            "state": "closed",
             "actions": [
               "open_app"
             ]

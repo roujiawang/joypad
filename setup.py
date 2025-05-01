@@ -24,7 +24,7 @@ setup(
     options={
         "build_exe": {
             "packages": ["openai", "tk"],  # Only add explicit libraries here
-            "includes": ["python-dotenv"],  # Explicitly include python-dotenv
+            "includes": ["dotenv"],  # Explicitly include python-dotenv
             "include_files": include_files  # Include additional files
         }
     },

@@ -54,7 +54,6 @@ def add_element_to_tree(tree, target, parent_path, node_type="toggle", default_s
             node["children"] = {}
         node = node["children"]
 
-    # Only add if it doesn’t already exist
     if target not in node:
         if node_type == "toggle":
             node[target] = {
@@ -67,6 +66,12 @@ def add_element_to_tree(tree, target, parent_path, node_type="toggle", default_s
                 "type": "slider",
                 "value": int(default_state) if default_state.isdigit() else 50,
                 "actions": ["set_value"]
+            }
+        elif node_type == "open_app":
+            node[target] = {
+                "type": "app",
+                "state": default_state,
+                "actions": ["open_app"]
             }
         else:
             node[target] = {
@@ -98,7 +103,13 @@ def execute_intents(intents, log_fn):
             log_fn(f"> {target} not found after retries. Creating fallback...")
             fallback_path = ["Settings", "Misc"]
             default = desired_state or str(value or "off")
-            add_element_to_tree(accessibility_tree, target, fallback_path, node_type=action, default_state=default)
+            add_element_to_tree(
+                accessibility_tree,
+                target,
+                fallback_path,
+                node_type=action,
+                default_state=default
+            )
             save_tree(accessibility_tree)
             node = find_element(accessibility_tree, target)
             if node:
@@ -106,18 +117,27 @@ def execute_intents(intents, log_fn):
 
         # Perform the action
         if node:
-            if action == "open_app":
-                log_fn(f"> Opening {target}...")
+            if action == "open" or action == "open_app":
+                old = node.get("state", "closed")
+                node["state"] = "open"
+                log_fn(f"> Opened {target} (was {old})")
+
             elif action == "toggle":
                 old = node.get("state", "off")
                 node["state"] = desired_state
                 log_fn(f"> Toggled {target} to {desired_state.upper()} (was {old})")
+
             elif action == "set_value":
                 old_val = node.get("value", "unknown")
                 node["value"] = value
                 log_fn(f"> Set {target} to {value} (was {old_val})")
+
             elif action == "click":
                 log_fn(f"> Clicked {target}")
+
+            else:
+                log_fn(f"> {action} not recognized for {target}")
+
             save_tree(accessibility_tree)
         else:
             log_fn(f"> Action failed for {target}. Element could not be resolved.")

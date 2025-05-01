@@ -11,12 +11,16 @@
               "Wi-Fi": {
                 "type": "toggle",
                 "state": "on",
-                "actions": ["toggle"]
+                "actions": [
+                  "toggle"
+                ]
               },
               "VPN": {
                 "type": "toggle",
                 "state": "off",
-                "actions": ["toggle"]
+                "actions": [
+                  "toggle"
+                ]
               }
             }
           },
@@ -29,12 +33,16 @@
                   "Brightness": {
                     "type": "slider",
                     "value": 70,
-                    "actions": ["set_value"]
+                    "actions": [
+                      "set_value"
+                    ]
                   },
                   "Night Light": {
                     "type": "toggle",
                     "state": "off",
-                    "actions": ["toggle"]
+                    "actions": [
+                      "toggle"
+                    ]
                   }
                 }
               },
@@ -44,12 +52,16 @@
                   "Volume": {
                     "type": "slider",
                     "value": 40,
-                    "actions": ["set_value"]
+                    "actions": [
+                      "set_value"
+                    ]
                   },
                   "Mute": {
                     "type": "toggle",
                     "state": "off",
-                    "actions": ["toggle"]
+                    "actions": [
+                      "toggle"
+                    ]
                   }
                 }
               }
@@ -63,12 +75,16 @@
           "Microsoft Edge": {
             "type": "app",
             "path": "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe",
-            "actions": ["open_app"]
+            "actions": [
+              "open_app"
+            ]
           },
           "Notepad": {
             "type": "app",
             "path": "C:\\Windows\\System32\\notepad.exe",
-            "actions": ["open_app"]
+            "actions": [
+              "open_app"
+            ]
           }
         }
       },
@@ -78,12 +94,16 @@
           "C: Drive": {
             "type": "drive",
             "path": "C:\\",
-            "actions": ["open_folder"]
+            "actions": [
+              "open_folder"
+            ]
           },
           "Downloads": {
             "type": "folder",
             "path": "C:\\Users\\User\\Downloads",
-            "actions": ["open_folder"]
+            "actions": [
+              "open_folder"
+            ]
           }
         }
       },
@@ -92,11 +112,15 @@
         "children": {
           "Recycle Bin": {
             "type": "shortcut",
-            "actions": ["open_app"]
+            "actions": [
+              "open_app"
+            ]
           },
           "My Computer": {
             "type": "shortcut",
-            "actions": ["open_app"]
+            "actions": [
+              "open_app"
+            ]
           }
         }
       }

@@ -133,6 +133,13 @@ def execute_intents(intents, log_fn):
                     node["state"] = "minimized"
                     log_fn(f"> Minimized {target} (was {current_state})")
 
+            elif action == "maximize":
+                if current_state == "maximized":
+                    log_fn(f"> {target} is already maximized.")
+                else:
+                    node["state"] = "maximized"
+                    log_fn(f"> Maximized {target} (was {current_state})")
+
             elif action == "focus":
                 if current_state == "foreground":
                     log_fn(f"> {target} is already in the foreground.")
@@ -173,6 +180,33 @@ def execute_intents(intents, log_fn):
 
             elif action == "click":
                 log_fn(f"> Clicked {target}")
+
+            elif action == "drag":
+                log_fn(f"> Dragged {target}")
+
+            elif action == "resize":
+                log_fn(f"> Resized {target} to {value}")
+
+            elif action == "scroll":
+                log_fn(f"> Scrolled {target} by {value}")
+
+            elif action == "enter_text":
+                log_fn(f"> Entered text into {target}: {value}")
+
+            elif action == "select_option":
+                log_fn(f"> Selected option {value} in {target}")
+
+            elif action == "submit":
+                log_fn(f"> Submitted form {target}")
+
+            elif action == "press_key":
+                log_fn(f"> Pressed key {value} for {target}")
+
+            elif action == "hover":
+                log_fn(f"> Hovered over {target}")
+
+            elif action == "switch_tab":
+                log_fn(f"> Switched to tab {value} in {target}")
 
             else:
                 log_fn(f"> Action '{action}' not recognized for {target}")
